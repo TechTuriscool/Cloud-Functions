@@ -1,0 +1,10 @@
+Las funciones van de 150 en 150 usuarios:
+
+Si alguna se cae en google cloudn functions, primero se intenta ejecutar subiendole la ram a 8GB 
+si con eso sigue fallando habra que partirlas y crear una funcion "-aux" donde se divide a 75 usuarios
+como en el ejemplo de funcion 2
+
+Y asi sucesivamente, en google functions vamos por la 20 aproximadamente
+
+Simplmente a cada funcion hay que camnbiarle el offset y el publisher de la liena 94 para añadir
+un mensaje nuevo a la cola de pubsub

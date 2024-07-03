@@ -1,0 +1,8 @@
+functions-framework==3.*
+google-cloud-bigquery
+requests
+datetime
+pandas
+pyarrow
+google-cloud-pubsub>=2.6.1
+db-dtypes

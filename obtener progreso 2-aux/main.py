@@ -5,6 +5,8 @@ import time
 import pandas as pd
 import pyarrow
 from google.cloud import pubsub_v1
+import warnings
+warnings.filterwarnings("ignore")
 
 def obtenerProgreso(event, context):
 
@@ -17,7 +19,7 @@ def obtenerProgreso(event, context):
   sql = """
     SELECT * FROM `my-project-83697-juan-carlos.datosCustomerSuccess.tablaAlumnos`
     ORDER BY `id`
-    LIMIT 75 OFFSET 149
+    LIMIT 75 OFFSET 224
   """
 
   datasetAlumnos = client.query_and_wait(sql).to_dataframe()
@@ -35,11 +37,12 @@ def obtenerProgreso(event, context):
 
           try:
               user_id = user_Id['id'][i]
+              print(i)
               url = "https://academy.turiscool.com/admin/api/v2/users/" + str(user_id) + "/progress"
               querystring = {"page": "1", "items_per_page": "150"}
               headers = {
                   "Lw-Client": "62b182eea31d8d9863079f42",
-                  "Authorization": "Bearer Vbs2rQlAvSUvuMhFpEZf9uAbrDCcXtnausV6ytXq",
+                  "Authorization": "Bearer ZwRg90VrUWLNBhEpfQnCuyJSPWWI7bjtpmO3QbH2",
                   "Accept": "application/json"
               }
               response = requests.get(url, headers=headers, params=querystring)
@@ -57,8 +60,6 @@ def obtenerProgreso(event, context):
 
   df_def = user_progress.merge(datasetAlumnos, on='id', how='left')
   df_def = df_def.reset_index()
-
-  print(y)
 
   df_def['Fecha'] = datetime.date.today().strftime('%Y-%m-%d')
 
@@ -95,8 +96,7 @@ def obtenerProgreso(event, context):
 
   publisher = pubsub_v1.PublisherClient()
   message_payload = "Lanzar ObtenerProgreso3"
-  future = publisher.publish("projects/my-project-83697-juan-carlos/topics/triggerObtenerProgreso2", data=message_payload.encode('utf-8'))
+  future = publisher.publish("projects/my-project-83697-juan-carlos/topics/triggerObtenerProgreso2-aux", data=message_payload.encode('utf-8'))
   future.result()
 
   return "Trabajo completado"          
-
